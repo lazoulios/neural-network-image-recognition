@@ -1,0 +1,13 @@
+# Αρχεία που αγνοούνται στο Python project
+
+# Εικονικό Περιβάλλον
+venv/
+.venv/
+env/
+
+# Αρχεία VSCode (ρυθμίσεις χρήστη)
+.vscode/
+
+
+# Αρχεία CPython (π.χ. pyc)
+*.pyc
