@@ -96,6 +96,26 @@ print("\n--- FINAL EVALUATION ---")
 # EXAMPLE WITH PICTURES
 if training_time > 0:
     print(f"\nTOTAL TRAINING TIME: {training_time:.2f} seconds")
+    # 1. Accuracy Plot
+    plt.figure(figsize=(10, 5))
+    plt.plot(history.history['accuracy'], label='Training Accuracy')
+    plt.plot(history.history['val_accuracy'], label='Validation Accuracy')
+    plt.title('Accuracy over Epochs')
+    plt.xlabel('Epoch')
+    plt.ylabel('Accuracy')
+    plt.legend()
+    plt.grid(True)
+
+    # 2. Loss Plot
+    plt.figure(figsize=(10, 5))
+    plt.plot(history.history['loss'], label='Training Loss')
+    plt.plot(history.history['val_loss'], label='Validation Loss')
+    plt.title('Loss over Epochs')
+    plt.xlabel('Epoch')
+    plt.ylabel('Loss')
+    plt.legend()
+    plt.grid(True)
+
 else:
     print("\nMODEL LOADED FROM SAVED FILE, NO TRAINING PERFORMED.")
 
