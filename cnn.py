@@ -29,7 +29,7 @@ input_shape = x_train.shape[1:]
 print(f"CNN INPUT SHAPE (32x32x3): {input_shape}")
 
 MODEL_DIR = 'models'
-MODEL_FILENAME = 'cnn_32_64_20_EPOCHS_cifar10_trained_model.keras'
+MODEL_FILENAME = 'cnn_16_32_cifar10_trained_model.keras'
 full_path = os.path.join(MODEL_DIR, MODEL_FILENAME)
 
 EPOCHS = 20
@@ -122,7 +122,7 @@ incorrect_indices = np.where(predicted_classes != true_classes)[0]
 cifar10_labels = ['airplane', 'automobile', 'bird', 'cat', 'deer', 'dog', 'frog', 'horse', 'ship', 'truck']
 
 fig, axes = plt.subplots(1, 2, figsize=(8, 4)) 
-fig.suptitle('MLP CLASSIFICATION EXAMPLES (CIFAR-10)')
+fig.suptitle('CNN CLASSIFICATION EXAMPLES (CIFAR-10)')
 plt.subplots_adjust(wspace=0.3) 
 
 # CORRECT EXAMPLE
