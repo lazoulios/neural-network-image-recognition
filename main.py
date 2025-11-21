@@ -1,24 +1,23 @@
 import os
-
 os.environ['TF_CPP_MIN_LOG_LEVEL'] = '3'
 
 import tensorflow as tf
 from keras.datasets import cifar10
 from keras.models import Sequential
-from keras.layers import Dense
+from keras.layers import Flatten, Dense, Conv2D, MaxPooling2D 
 import numpy as np
 import time
 import matplotlib.pyplot as plt
-from sklearn.decomposition import PCA
 from utils import save_model_to_directory
 
 
 print("LOADING CIFAR-10 DATA...")
 (x_train_original, y_train_original), (x_test_original, y_test_original) = cifar10.load_data()
 
-print("IMAGE NORMALIZATION...")
 x_train = x_train_original.astype('float32') / 255.0
 x_test = x_test_original.astype('float32') / 255.0
+
+print("IMAGE NORMALIZATION...")
 
 print("LABEL ONE-HOT ENCODING...")
 num_classes = 10 
@@ -27,28 +26,11 @@ y_test = tf.keras.utils.to_categorical(y_test_original, num_classes)
 
 input_shape = x_train.shape[1:] 
 
-X_train_flat = x_train.reshape(x_train.shape[0], -1) 
-X_test_flat = x_test.reshape(x_test.shape[0], -1)   
+print(f"CNN INPUT SHAPE (32x32x3): {input_shape}")
 
-N_COMPONENTS = 100 
-print(f"APPLYING PCA: DIMENSIONALITY REDUCTION FROM 3072 TO {N_COMPONENTS} COMPONENTS...")
-
-pca = PCA(n_components=N_COMPONENTS)
-pca.fit(X_train_flat) 
-
-x_train_pca = pca.transform(X_train_flat)
-x_test_pca = pca.transform(X_test_flat)
-
-new_input_shape = (N_COMPONENTS,) 
-
-print(f"NEW INPUT SHAPE FOR MLP (AFTER PCA): {new_input_shape}")
-
-x_train = x_train_pca
-x_test = x_test_pca
-input_shape = new_input_shape
 
 MODEL_DIR = 'models'
-MODEL_FILENAME = 'mlp_cifar10_trained_model.keras'
+MODEL_FILENAME = 'cnn_64_128_cifar10_trained_model.keras'
 full_path = os.path.join(MODEL_DIR, MODEL_FILENAME)
 
 EPOCHS = 10
@@ -61,10 +43,17 @@ if os.path.exists(full_path):
     training_time = 0.0 
 else:
     model = Sequential([
-            Dense(128, activation='relu', input_shape=new_input_shape), 
-            Dense(64, activation='relu'),
-            Dense(num_classes, activation='softmax')
-        ])
+        Conv2D(64, (3, 3), activation='relu', input_shape=input_shape), 
+        MaxPooling2D((2, 2)),
+        
+        Conv2D(128, (3, 3), activation='relu'),
+        MaxPooling2D((2, 2)),
+
+        Flatten(), 
+        
+        Dense(128, activation='relu'), 
+        Dense(num_classes, activation='softmax')
+    ])
 
     print("\n\nCOMPILING MODEL...")
     model.compile(optimizer='adam',
@@ -88,7 +77,6 @@ else:
 
     # SAVING TRAINED MODEL
     save_model_to_directory(model, MODEL_FILENAME)
-
 
 print("\n--- FINAL EVALUATION ---")
 
