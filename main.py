@@ -28,12 +28,11 @@ input_shape = x_train.shape[1:]
 
 print(f"CNN INPUT SHAPE (32x32x3): {input_shape}")
 
-
 MODEL_DIR = 'models'
-MODEL_FILENAME = 'cnn_64_128_cifar10_trained_model.keras'
+MODEL_FILENAME = 'cnn_32_64_20_EPOCHS_cifar10_trained_model.keras'
 full_path = os.path.join(MODEL_DIR, MODEL_FILENAME)
 
-EPOCHS = 10
+EPOCHS = 20
 BATCH_SIZE = 32
 
 # CHECK IF MODEL EXISTS
@@ -43,10 +42,10 @@ if os.path.exists(full_path):
     training_time = 0.0 
 else:
     model = Sequential([
-        Conv2D(64, (3, 3), activation='relu', input_shape=input_shape), 
+        Conv2D(32, (3, 3), activation='relu', input_shape=input_shape), 
         MaxPooling2D((2, 2)),
         
-        Conv2D(128, (3, 3), activation='relu'),
+        Conv2D(64, (3, 3), activation='relu'),
         MaxPooling2D((2, 2)),
 
         Flatten(), 
@@ -79,7 +78,6 @@ else:
     save_model_to_directory(model, MODEL_FILENAME)
 
 print("\n--- FINAL EVALUATION ---")
-
 
 # EXAMPLE WITH PICTURES
 if training_time > 0:
