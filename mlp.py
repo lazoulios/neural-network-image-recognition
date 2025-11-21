@@ -48,7 +48,7 @@ x_test = x_test_pca
 input_shape = new_input_shape
 
 MODEL_DIR = 'models'
-MODEL_FILENAME = 'mlp_cifar10_trained_model.keras'
+MODEL_FILENAME = 'mlp_64_32_cifar10_trained_model.keras'
 full_path = os.path.join(MODEL_DIR, MODEL_FILENAME)
 
 EPOCHS = 10
